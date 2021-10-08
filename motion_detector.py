@@ -1,9 +1,12 @@
-import cv2, time
+import cv2, time, pandas
 from datetime import date, datetime
 
 first_frame=None
 status_list=[None,None]
+
+#Empty list that stores how many times user entered the frame
 times=[]
+df = pandas.DataFrame(columns=["Start","End"])
 captureDevice = cv2.VideoCapture(0, cv2.CAP_DSHOW) #captureDevice = camera
 
 
@@ -58,5 +61,11 @@ while True:
         break
 print(status_list)
 print(times)
+
+for i in range(0,len(times),2):
+    df=df.append({"Start":times[i],"End:":[i+1]},ignore_index=True)
+    
+# output the results
+df.to_csv("Times.csv")
 captureDevice.release()
 cv2.destroyAllWindows
